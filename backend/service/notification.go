@@ -27,12 +27,6 @@ func (n *Notification) NotifyRestaurant(restaurantID int64, data *model.Order) {
 	n.Mu.RUnlock()
 
 	// 2. Send notifications without holding any lock
-	for _, subscriber := range activeSubscribers {
-		select {
-		case subscriber <- data:
-		default:
-		}
-	}
 	// Send notifications outside the lock
 	for _, subscriber := range activeSubscribers {
 		select {
